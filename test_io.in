@@ -1,0 +1,5 @@
+GLOBAL_verbose= 1;
+GLOBAL_STRING= insert_global_string_here;
+GLOBAL_INT= -65536;
+GLOBAL_DOUBLE= +3.14159;
+END= 0;
