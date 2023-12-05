@@ -376,12 +376,13 @@ void sparse_link_dump_ascii(struct neuronarray *Nra,char *fgvn)
 {
   /* assumes fgvn starts with "./" 
      format:
-     Nra->ntypes
+     Nra->ntypes;
      Nra->lengthra[0],Nra->lengthra[1],...,Nra->lengthra[Nra->ntypes-1];
-     ntA,nrA NUMBER_OF_CONNECTED_NEURONS nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
-     ntB,nrB NUMBER_OF_CONNECTED_NEURONS nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
+     LINK= ntA,nrA,NUMBER_OF_CONNECTED_NEURONS,nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
+     LINK= ntB,nrB,NUMBER_OF_CONNECTED_NEURONS,nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
      ... 
-     END; */
+     END;
+  */
   char filename[512];
   int nt1=0,nr1=0;
   FILE *fp=NULL;
@@ -422,8 +423,10 @@ void sparse_link_read_ascii(struct neuronarray *Nra,char *fgvn)
   char vname[128],equals[2],space[1],semicolon[1],comma_vs_semicolon[1];
   int nr=0,nt=0,nl=0,nl1=0,nr2=0,nt2=0,temp=0;
   struct neuron *n1=NULL,*n2=NULL;
+  if (verbose){ printf(" %% [entering sparse_link_read_ascii]\n");}
   if (fgvn==NULL){ sprintf(filename,"./sparse_link_dump_ascii_%s",GLOBAL_STRING_2);}
   else /* if (fgvn!=NULL) */{ sprintf(filename,"%s",fgvn);}
+  if (verbose){ printf("filename: %s\n",filename);}
   if ((fp=fopen(filename,"r"))==NULL){ printf(" warning, cannot open %s in sparse_link_read_ascii\n",filename); fp=stdin; exit(0);}
   fscanf(fp,"%d",&temp); if (verbose){ printf("ntypes read as %d, ",temp);}
   if (Nra->ntypes!=temp){ if (verbose){ printf("wrong\n");} exit(0);}
@@ -433,13 +436,15 @@ void sparse_link_read_ascii(struct neuronarray *Nra,char *fgvn)
     fscanf(fp,"%d",&temp); if (verbose){ printf("lengthra[%d] read as %d, ",nt,temp);}
     if (Nra->lengthra[nt]!=temp){ if (verbose){ printf("wrong\n");} exit(0);}
     else if (Nra->lengthra[nt]==temp){ if (verbose){ printf("right\n");}}
-    fscanf(fp,"%c",semicolon);fscanf(fp,"%c",space);}
+    fscanf(fp,"%c",semicolon);}
+  fscanf(fp,"%c",space);
   for (nt=0;nt<Nra->ntypes;nt++){ for (nr=0;nr<Nra->lengthra[nt];nr++){
     n1=nget(Nra,nt,nr); 
     if (n1->sparse_link!=NULL){ llitemtfree(n1->sparse_link,NULL); n1->sparse_link=NULL;}
     n1->sparse_link = llitemmake(); n1->sparse_link->item=n1;}}
   do{
     fscanf(fp,"%[^=]",vname);
+    if (verbose){ printf(" vname %s\n",vname);}
     if (strcmp(vname,"LINK")==0){
       fscanf(fp,"%s",equals);fscanf(fp,"%c",space);
       fscanf(fp,"%d",&nt);fscanf(fp,"%c",comma_vs_semicolon);
@@ -461,4 +466,5 @@ void sparse_link_read_ascii(struct neuronarray *Nra,char *fgvn)
 	fscanf(fp,"%c",space);}}}
   while (strcmp(vname,"LINK")==0);
   if (fp!=stdin){ fclose(fp);}
+  if (verbose){ printf(" %% [finished sparse_link_read_ascii]\n");}
 }    

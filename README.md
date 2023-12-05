@@ -38,3 +38,16 @@ are quite similar, with the differences:
 (ii) the stimulus is far simpler (with pulses controlled by the viewer), and
 (iii) most forms of data-collection are disabled (with the exception of the 'power' data-structure). 
 
+%%%%%%%%;
+% Importing connectivity: ;
+%%%%%%%%;
+To incorprate a particular connectivity, you can set up an ascii file with the following format:
+%%%%;
+Nra->ntypes;
+Nra->lengthra[0],Nra->lengthra[1],...,Nra->lengthra[Nra->ntypes-1];
+LINK= ntA,nrA,NUMBER_OF_CONNECTED_NEURONS,nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
+LINK= ntB,nrB,NUMBER_OF_CONNECTED_NEURONS,nt1,nr1,nt2,nr2,nt3,nr3,...,ntN,nrN;
+... 
+END;
+%%%%;
+

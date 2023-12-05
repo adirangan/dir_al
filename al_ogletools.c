@@ -2022,7 +2022,7 @@ GLvoid DrawGLScene(GLvoid)
     switch(GLOBAL_NEURON_MODEL){
     case 0: case 1: case 2: case 3: case 4: Drawcra(GLOBAL_Nra,1,1,-1); break;
     case 5: /* mainak style */ Drawcra(GLOBAL_Nra,1,1,-1); break;
-    case 6: /* wilson style */ /* Drawcra(GLOBAL_Nra,1,1,-1); */ break;
+    case 6: /* wilson style */ Drawcra(GLOBAL_Nra,1,-2,-2); break;
     case 7: /* snx style */ Drawsnx(2,2,-1); break;
     default: break;}
   }
